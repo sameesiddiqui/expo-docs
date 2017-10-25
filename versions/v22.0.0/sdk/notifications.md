@@ -49,7 +49,7 @@ If your app doesn't need push notifications, Expo allows you to also send local 
 
  On Android, we only need to do step 1. Here's an example of local notifications on Android.
 
- ![sketch](S1gdfOb4Z)
+ ![sketch](BkCZL5A6W)
 
 To make this example work on iOS, we need to first request permissions from the user.
 
