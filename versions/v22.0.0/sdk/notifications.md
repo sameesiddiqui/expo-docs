@@ -4,54 +4,65 @@ title: Notifications
 
 Provides access to remote notifications (also known as push notifications) and local notifications (scheduling and immediate) related functions.
 
-## Subscribing to Notifications
-
-### `Expo.Notifications.addListener(listener)`
-
-#### Arguments
-
--   **listener (_function_)** -- A callback that is invoked when a remote or local notification is received or selected, with a Notification object.
-
-#### Returns
-
-An [EventSubscription](#eventsubscription) object that you can call remove() on when you would like to unsubscribe the listener.
-
-### Related types
-
-### `EventSubscription`
-
-Returned from `addListener`.
-
--   **remove() (_function_)** -- Unsubscribe the listener from future notifications.
-    `Notification`
-
-An object that is passed into each event listener when a notification is received:
-
--   **origin (_string_)** -- Either `selected` or `received`. `selected` if the notification was tapped on by the user, `received` if the notification was received while the user was in the app.
--   **data (_object_)** -- Any data that has been attached with the notification.
--   **remote (_boolean_)** -- `true` if the notification is a push notification, `false` if it is a local notification.
 
 ## Remote (Push) Notifications
 
+These are notifications that are sent remotely - meaning from your server, not app code. This means you can send notifications to your users when you need to tell them something important without them needing to take any action. They're a bit trickier than local notifications, but luckily Expo makes the whole process simple and straightforward. [Read more in the Push Notifications guide](../guides/push-notifications.html#push-notifications).
+
 ### `Expo.Notifications.getExpoPushTokenAsync()`
+
+Gets the token that uniquely identifies this device. This token can be provided to the Expo notifications backend to send a push notification to this device. 
 
 #### Returns
 
-Returns a Promise that resolves to a token string. This token can be provided to the Expo notifications backend to send a push notification to this device. [Read more in the Push Notifications guide](../guides/push-notifications.html#push-notifications).
+Returns a Promise that resolves to the token string. 
+
 
 ## Local Notifications
 
-If your app doesn't need push notifications, Expo allows you to also send local notifications. To display notifications, we need to do the following on iOS:
+Local notifications happen entirely on the device, without needing to contact a server. If you need to alert the user of something right now or schedule something for the future (say, a calendar event), this is the way to go.
+
+Creating local notifications is super easy:
+```javascript
+const notification = {
+    title: 'This is a title',
+    body: 'This is the body text of the local notification',
+    android: {
+      sound: true,
+    },
+    ios: {
+      sound: true,
+    }
+}
+```
+
+Full parameter list:
+#### LocalNotification
+-  **title (_string_)** -- title text of the notification
+-   **body (_string_)** -- body text of the notification.
+-   **data (_optional_) (_object_)** -- any data that has been attached with the notification.
+-   **ios (_optional_) (_object_)** -- notification configuration specific to iOS.
+    -   **sound** (_optional_) (_boolean_) -- if `true`, play a sound. Default: `false`.
+-   **android (_optional_) (_object_)** -- notification configuration specific to Android.
+    -   **sound** (_optional_) (_boolean_) -- if `true`, play a sound. Default: `false`.
+    -   **icon** (_optional_) (_string_) -- URL of icon to display in notification drawer.
+    -   **color** (_optional_) (_string_) -- color of the notification icon in notification drawer.
+    -   **priority** (_optional_) (_min | low | high | max_) -- android may present notifications according to the priority, for example a `high` priority notification will likely to be shown as a heads-up notification.
+    -   **sticky** (_optional_) (_boolean_) -- if `true`, the notification will be sticky and not dismissable by user. The notification must be programmatically dismissed. Default: `false`.
+    -   **vibrate** (_optional_) (_boolean_ or _array_) -- if `true`, vibrate the device. An array can be supplied to specify the vibration pattern, e.g. - `[ 0, 500 ]`.
+    -   **link** (_optional_) (_string_) -- external link to open when notification is selected.
+
+
+On Android, all we have to do now is schedule it and we're ready to go. Here's a working example:
+![sketch](BkCZL5A6W)
+
+iOS is slightly tougher. We need to follow a few steps:
 
  1. Create the notification and scheduling objects
  2. Setup permissions for iOS notifications
  3. Setup a listener so iOS users can get the notification.
 
- On Android, we only need to do step 1. Here's an example of local notifications on Android.
-
- ![sketch](BkCZL5A6W)
-
-To make this example work on iOS, we need to first request permissions from the user.
+Adding on to our Android example (step 1), we now need to request permissions from the user.
 
 ```javascript
 async function getiOSNotificationPermission() {
@@ -66,13 +77,57 @@ And then, we just need to subscribe for notifications with `Expo.Notifications.a
 
 ![sketch](rk7VdlH6b)
 
+
+## Subscribing to Notifications
+
+Subscribing to notifications allows your app to respond to notifications being received or clicked.
+
+### `Expo.Notifications.addListener(listener)`
+
+Creates a subscription that listens for notification events.
+
+#### Arguments
+
+-   **listener (_function_)** -- A callback that is invoked when a remote or local notification is received or selected. Takes an object with three properties as its parameter:
+
+    -   **origin (_string_)** -- Either `selected` or `received`. `selected` if the notification was tapped on by the user, `received` if the notification was received while the user was in the app.
+    -   **data (_object_)** -- Any data that has been attached with the notification.
+    -   **remote (_boolean_)** -- `true` if the notification is a push notification, `false` if it is a local notification.
+
+#### Returns
+
+An `EventSubscription` object that you can call remove() on when you would like to unsubscribe the listener from future notifications.
+
+```javascript
+// Subscribe to notifications after this component mounts
+componentDidMount() {
+    this._notificationSubscription = Notifications.addListener(this._handleNotification)
+}
+
+// Unsubscribe when unmounted
+componentWillUnmount() {
+    this._notificationSubscription && this._notificationSubscription.remove()
+}
+
+// Handle our notifications by printing if it's information
+_handleNotification = ({ origin, data, remote }) => {
+    let type = remote ? 'Push' : 'Local'
+    console.log(
+      `${type} notification ${origin} with data: ${JSON.stringify(data)}`
+    )
+}
+```
+
+
+## Scheduling Notifications
+
 ### `Expo.Notifications.presentLocalNotificationAsync(localNotification)`
 
 Trigger a local notification immediately.
 
 #### Arguments
 
--   **localNotification (_object_)** -- An object with the properties described in [LocalNotification](#localnotification).
+-   **localNotification (_object_)** -- A [LocalNotification](#localnotification) object.
 
 #### Returns
 
@@ -86,7 +141,7 @@ Schedule a local notification to fire at some specific time in the future or at 
 
 -   **localNotification (_object_)** --
 
-      An object with the properties described in [LocalNotification](#localnotification).
+      A [LocalNotification](#localnotification) object.
 
 -   **schedulingOptions (_object_)** --
 
@@ -126,22 +181,7 @@ Cancel all scheduled notifications.
 
 ### Related types
 
-#### LocalNotification
-An object used to describe the local notification that you would like to present or schedule.
 
--   **title (_string_)** -- title text of the notification
--   **body (_string_)** -- body text of the notification.
--   **data (_optional_) (_object_)** -- any data that has been attached with the notification.
--   **ios (_optional_) (_object_)** -- notification configuration specific to iOS.
-    -   **sound** (_optional_) (_boolean_) -- if `true`, play a sound. Default: `false`.
--   **android (_optional_) (_object_)** -- notification configuration specific to Android.
-    -   **sound** (_optional_) (_boolean_) -- if `true`, play a sound. Default: `false`.
-    -   **icon** (_optional_) (_string_) -- URL of icon to display in notification drawer.
-    -   **color** (_optional_) (_string_) -- color of the notification icon in notification drawer.
-    -   **priority** (_optional_) (_min | low | high | max_) -- android may present notifications according to the priority, for example a `high` priority notification will likely to be shown as a heads-up notification.
-    -   **sticky** (_optional_) (_boolean_) -- if `true`, the notification will be sticky and not dismissable by user. The notification must be programmatically dismissed. Default: `false`.
-    -   **vibrate** (_optional_) (_boolean_ or _array_) -- if `true`, vibrate the device. An array can be supplied to specify the vibration pattern, e.g. - `[ 0, 500 ]`.
-    -   **link** (_optional_) (_string_) -- external link to open when notification is selected.
 
 ## App Icon Badge Number (iOS)
 
