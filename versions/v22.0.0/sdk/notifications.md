@@ -140,9 +140,7 @@ Schedule a local notification to fire at some specific time in the future or at 
 
 #### Arguments
 
--   **localNotification (_object_)** --
-
-      A [LocalNotification](#localnotification) object.
+-   **localNotification (_object_)** -- A [LocalNotification](#localnotification) object.
 
 -   **schedulingOptions (_object_)** --
 
