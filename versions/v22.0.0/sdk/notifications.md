@@ -22,7 +22,7 @@ Returns a Promise that resolves to the token string.
 
 Local notifications happen entirely on the device, without needing to contact a server. If you need to alert the user of something right now or schedule something for the future (say, a calendar event), this is the way to go.
 
-Creating local notifications is super easy:
+Creating a local notification is super easy:
 ```javascript
 const notification = {
     title: 'This is a title',
@@ -54,6 +54,7 @@ Full parameter list:
 
 
 On Android, all we have to do now is schedule it and we're ready to go. Here's a working example:
+
 ![sketch](BkCZL5A6W)
 
 iOS is slightly tougher. We need to follow a few steps:
