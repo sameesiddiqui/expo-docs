@@ -76,7 +76,7 @@ async function getiOSNotificationPermission() {
 
 And then, we just need to subscribe for notifications with `Expo.Notifications.addListener` and display an [`Alert`](https://facebook.github.io/react-native/docs/alert.html). Here's the Android example expanded to work on iOS. Note: when testing out this example, make sure that you exit out of the app before time is up. The notification won't display on iOS if the app is being viewed. Also, make sure you don't have "Do Not Disturb" turned on.
 
-![sketch](rk7VdlH6b)
+![sketch](BJzHKQHRW)
 
 
 ## Subscribing to Notifications
