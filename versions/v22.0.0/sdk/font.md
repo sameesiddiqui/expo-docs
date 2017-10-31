@@ -12,7 +12,7 @@ Load a font from the web and associate it with the given name.
 
 #### Arguments
 
--   **name (_string_)** -- A name by which to identify this font. You can make up any name you want; this will be the name that you use when setting `fontFamily`. For example, if the name is `'open-sans'` then your `Text` component would look like: `<Text style={{fontFamily: 'open-sans'}}>Hello world</Text>`
+-   **name (_string_)** -- A name by which to identify this font. You can make up any name you want, but it should be all lowercase. This will be the name that you use when setting `fontFamily`. For example, if the name is `'open-sans'` then your `Text` component would look like: `<Text style={{fontFamily: 'open-sans'}}>Hello world</Text>`
 
 - **url (_string_)** -- This can be either a remote URL or a `require` statement for the font file.
 
