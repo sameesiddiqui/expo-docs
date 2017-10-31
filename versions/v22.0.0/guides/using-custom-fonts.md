@@ -4,6 +4,12 @@ title: Using Custom Fonts
 
 Both iOS and Android come with their own set of platform fonts but if you want to inject some more brand personality into your app, a well picked font can go a long way. In this guide we'll walk you through adding a custom font to your Expo app. We'll use [Open Sans](https://fonts.google.com/specimen/Open+Sans) from [Google Fonts](https://fonts.google.com/) in the example, and the process is identical for any other font, so feel free to adapt it to your use case. Before proceeding, go ahead and download [Open Sans](https://fonts.google.com/specimen/Open+Sans)
 
+## Full Example
+
+Here's a full example to play around with that loads a few fonts.
+
+![sketch](BkxGUHSAW)
+
 ## Starting code
 
 First let's start with a basic "Hello world!" app. Create a new project in XDE/exp and change `App.js` to the following:
