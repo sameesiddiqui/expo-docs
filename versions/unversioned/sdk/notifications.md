@@ -193,3 +193,4 @@ Returns a promise that resolves to the number that is displayed in a badge on th
 ### `Expo.Notifications.setBadgeNumberAsync(number)`
 
 Sets the number displayed in the app icon's badge to the given number. Setting the number to zero will both clear the badge and the list of notifications in the device's notification center on iOS. On Android this method does nothing.
+
