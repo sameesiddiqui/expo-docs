@@ -48,7 +48,7 @@ To load and use fonts we will use the [Expo SDK](../sdk/index.html#expo-sdk), wh
 import { Font } from 'expo';
 ```
 
-The `expo` library provides an API to access native functionality of the device from your JavaScript code. `Font` is the module that deals with font-related tasks. First, we must load the font from our assets directory using [`Expo.Font.loadAsync()`](../sdk/font.html#exponentfontloadasync "Expo.Font.loadAsync"). We can do this in the [componentDidMount()](https://facebook.github.io/react/docs/component-specs.html#mounting-componentdidmount) lifecycle method of the `App` component. Add the following method in `App`: Now that we have the font files saved to disk and the Font SDK imported, let's add this code:
+The `expo` library provides an API to access native functionality of the device from your JavaScript code. `Font` is the module that deals with font-related tasks. First, we must load the font from our assets directory using [`Expo.Font.loadAsync()`](../sdk/font.html#exponentfontloadasync "Expo.Font.loadAsync"). We can do this in the [componentDidMount()](https://facebook.github.io/react/docs/component-specs.html#mounting-componentdidmount) lifecycle method of the `App` component. Now that we have the font files saved to disk and the Font SDK imported, let's add this code:
 
 ```javascript
 export default class App extends React.Component {
